@@ -1,23 +1,54 @@
-# 1) 
-abcd = (lambda x: x*x - 10)(2)
-print (abcd)
+# 1. Написать функцию binary_search, принимающую в качестве входящего параметра 
+# элемент для поиска и список в котором необходимо искать.
+# 2. Алгоритм должен искать с помощью двоичного поиска, изображенного на блок-схеме
+# презентации.
+# 3. Функция в итоге должна распечатать результат.
+# 4. Написать функцию buble_sort или selection_sort, принимающую в качестве входящего
+# параметра не отсортированный список.
+# 5. Алгоритм функции должен сортировать список методом пузырьковой сортировки или
+# методом сортировки выбором.
+# 6. Функция в итоге должна возвращать отсортированный список.
 
-# 2) 
-print (list(set(['Kuma', 'Nurtilek', 'Zina', 'Edzen', 'Kuma', 'Aitenur', 'Zina'])))
 
-# 3) 
-print(list(filter(lambda numbers: numbers %2 == 0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])))
+def binary_search(element, lst):
+    low = 0
+    high = len(lst) - 1
 
-# 4) 
-print(list(filter(lambda name: name == name[::-1], ['azat', 'zina', 'kuma', 'anna', 'sas'])))
+    while low <= high:
+        mid = (low + high) // 2
+        guess = lst[mid]
 
-# ДОП ЗАДАЧА:
-# 5) 
-import datetime
-time1_str = input("Введите первую отметку времени в формате 'чч:мм:сс': ")
-time1 = datetime.datetime.strptime(time1_str, "%H:%M:%S").time()
-time2_str = input("Введите вторую отметку времени в формате 'чч:мм:сс': ")
-time2 = datetime.datetime.strptime(time2_str, "%H:%M:%S").time()
-difference = (datetime.datetime.combine(datetime.date.today(), time2) -
-              datetime.datetime.combine(datetime.date.today(), time1)).total_seconds()
-print("Разница между отметками времени: {} секунд".format(int(difference)))
+        if guess == element:
+            return mid
+        if guess > element:
+            high = mid - 1
+        else:
+            low = mid + 1
+
+    return -1
+
+
+def bubble_sort(lst):
+    n = len(lst)
+
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+            if lst[j] > lst[j + 1]:
+                lst[j], lst[j + 1] = lst[j + 1], lst[j]
+
+    return lst
+
+
+my_list = [1, 3, 5, 7, 9, 11]
+element_to_find = 7
+
+result = binary_search(element_to_find, my_list)
+if result != -1:
+    print("Элемент найден на позиции", result)
+else:
+    print("Элемент не найден")
+
+
+unsorted_list = [4, 2, 9, 1, 7, 5]
+sorted_list = bubble_sort(unsorted_list)
+print("Отсортированный список:", sorted_list)
