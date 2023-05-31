@@ -1,105 +1,79 @@
-# 1) Напишите функцию, которая принимает фразу, и возвращает его сокращенную
-# форму.
-# Например: Кыргызская Республика -- КР. Ruby on Rails -- ROR. For your interest --
-# FYI и т.п.
-# def abcd (*phrase):
-#     words == list(phrase.split())
-#     first_letters = [word[0] for word in words] 
-#     return ''.join(first_letters).upper()  
-# print (abcd ("Кыргызская Республика", "Ruby on Rails", "For your interest"))
+# # 1. Создать класс под названием data, в класс добавить атрибуты full_na\.\w+me, email, file_name, color. 
+# # Добавить геттеры и сеттеры для всех атрибутов
+# # 2. Затем считать из файла MOCK_DATA.txt, в котором 1000 строк с данными (Имя и
+# # Фамилия, почта, название файла с расширением и код цвета)
+# # 3. Из каждой считанной строки создать объект класса data и добавить его в список.
+# # 4. Затем через цикл пройтись по каждому объекту и записать в 4 разных файла все типы информации. (1й файл: Имена с фамилиями, 2й файл: почта, 3й файл: названия файлов с расширением, 4й файл: коды цветов)
 
-# 2) Напишите функцию, которая проверяет, сколько раз каждое слово в переданной
-# фразе было использовано. Например: “Money, money, money, it’s always sunny, in
-# the richmen’s world”. money: 3, it’s: 1, always: 1, sunny: 1, in: 1, the: 1, richmen’s: 1,
-# world: 1.
-# def counting (words):
-#     text = str(words)
-#     print(text.count)
-#     return 
-# counting('Money, money, money, it's always sunny, in the richmen's world')
+import re
 
-# 3) Напишите функцию, которая принимает слово и возвращает True, если слово
-# изограмма (т.е. все буквы в слове уникальны). Иначе возвращает False.
-# def iso_word (word):
-#     if word == set:
-#         return True
-#     else:
-#         return False
-# print (iso_word({"Numu"}))
+class Data:
+    def __init__(self, full_name, email, file_name, color):
+        self.__full_name = full_name
+        self.__email = email
+        self.__file_name = file_name
+        self.__color = color
 
-# 4) 
-# def reverse_num (n):
-#     reverse_str = str(n)[::-1]
-#     return int(reverse_str)
-# print (reverse_num(27))
-
-# ДОП ЗАДАНИЕ:
-# 5) Напишите функцию -- чат-бот с бесконечным циклом, который
-# a. Всегда отвечает “Конечно!” на любой вопрос
-# b. Всегда отвечает “Успокойся”, если ты кричишь на него ВОТ ТАК!
-# c. Всегда отвечает “Как классно, когда ты молчишь. Продолжай в том же
-# духе!” Если вызвал функцию, но ничего не передал.
-# d. В любых других случаях, отвечает “ну и что"
+    @property
+    def full_name(self):
+        return self.__full_name
+    
+    @property
+    def email(self):
+        return self.__email
+    
+    @property
+    def file_name(self):
+        return self.__file_name
+    
+    @property
+    def color(self):
+        return self.__color
 
 
+    @full_name.setter
+    def full_name(self, value):
+        self.__full_name = value
+
+    @email.setter
+    def email(self, value):
+        self.__email = value
+
+    @file_name.setter
+    def file_name(self, value):
+        self.__file_name = value
+
+    @color.setter
+    def color(self, value):
+        self.__color = value
 
 
+with open('MOCK_DATA.txt', 'r', encoding="utf-8") as file:
+    content = file.readlines()
 
+people = []
+for line in content:
+    print(re.findall(r"[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+", line))
+    full_name = re.findall(r"^[A-Za-z'\-]+\s[A-Za-z'\-]+", line)[0]
+    email = re.findall(r"[a-zA-Z0-9]+@[-a-zA-Z0-9]+\.[a-zA-Z0-9]+", line)[0]
+    file_name = re.findall(r"\t\w+\.\w+", line)[0].replace("\t", '')
+    color = re.findall(r"#\w+", line)[0].replace("\t", '')
+    people.append(Data(full_name, email, file_name, color))
 
+print(people)
 
+with open('fullname.txt', 'w', encoding="utf-8") as fullname_file:
+    for i in people:
+        fullname_file.write(i.full_name + '\n')
 
+with open('mail.txt', 'w', encoding="utf-8") as mail_file:
+    for i in people:
+        mail_file.write(i.email + '\n')
 
-# def shorten_phrase(phrase):
-#     words = phrase.split()  # разделить строку на список слов
-#     first_letters = [word[0] for word in words]  # извлечь первую букву каждого слова
-#     return ''.join(first_letters).upper()  # объединить буквы в строку и вернуть ее в верхнем регистре
-# shorten_phrase("Кыргызская Республика")
-# # 'КР'
+with open('file.txt', 'w', encoding="utf-8") as file_file:
+    for i in people:
+        file_file.write(i.file_name + '\n')
 
-
-
-
-# def count_words(sentence):
-#     words = sentence.lower().split()  # привести все слова к нижнему регистру и разделить строку на список слов
-#     word_counts = {}  # создать пустой словарь для хранения количества каждого слова
-#     for word in words:
-#         if word in word_counts:
-#             word_counts[word] += 1  # увеличить счетчик, если слово уже в словаре
-#         else:
-#             word_counts[word] = 1  # добавить слово в словарь, если оно еще не было обнаружено
-#     return word_counts
-# >>> count_words("Money, money, money, it's always sunny, in the richmen's world")
-# {'money,': 3, "it's": 1, 'always': 1, 'sunny,': 1, 'in': 1, 'the': 1, "richmen's": 1, 'world': 1}
-
-
-# def is_isogram(word):
-#     letters = set()  # создать множество для хранения букв
-#     for letter in word:
-#         if letter.isalpha():  # проверить, является ли символ буквой
-#             if letter in letters:  # если буква уже встречалась, то слово не является изограммой
-#                 return False
-#             letters.add(letter)  # добавить букву в множество
-#     return True  # если функция дошла до этого места, значит слово является изограммой
-
-
-# def reverse_integer(n):
-#     reversed_n = 0
-#     is_negative = n < 0  # сохранить информацию о том, является ли число отрицательным
-#     if is_negative:
-#         n = -n  # перевести число в положительную форму для удобства
-#     while n > 0:
-#         reversed_n = reversed_n * 10 + n % 10  # добавить следующую цифру в перевернутое число
-#         n //= 10  # удалить последнюю цифру из исходного числа
-#     return -reversed_n if is_negative else reversed_n  # вернуть перевернутое число с учетом знака
-
-# def chat_bot():
-#     while True:
-#         user_input = input("Ты: ")
-        
-#         if not user_input:
-#             print("Бот: Как классно, когда ты молчишь. Продолжай в том же духе!")
-#         elif user_input.isupper():
-#             print("Бот: Успокойся")
-#         else:
-#             print("Бот: Конечно!")
-# chat_bot()
+with open('color.txt', 'w', encoding="utf-8") as color_file:
+    for i in people:
+        color_file.write(i.color + '\n')
