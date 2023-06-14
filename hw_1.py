@@ -1,10 +1,4 @@
-# 1) Напишите телеграмм бот который загадывает случайное число с помощью
-# библиотеки random и вы должны угадать его.
-# Бот: Я загадал число от 1 до 3 угадайте
-# Пользователь: Вводит число 2, если число правильное то выводит “Правильно вы
-# отгадали”
-# ДОП ЗАДАНИЕ:
-# 2) Загрузить файлы в GitHub с .gitignore
+
 
 
 from aiogram import Bot, Dispatcher, types, executor
@@ -35,6 +29,3 @@ async def guess_number(message: types.Message):
 
 if __name__ == '__main__':
     executor.start_polling(dp)
-
-
-
